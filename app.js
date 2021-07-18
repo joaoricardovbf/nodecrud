@@ -41,10 +41,10 @@ app.use(
     
     connection(mysql,{
         
-        host: 'mysql://mysql:3306/', //'localhost',
-        user: 'userEHX',
-        password : 'hMmx56FN4GHpMXOl',
-        port : 3306, //port mysql
+        host: 'database-1.cpwufzgwoaxq.us-east-2.rds.amazonaws.com', //'AWS_RDS_MY_SQL_Free',
+        user: 'admin',
+        password : 'Welcom1$',
+        port : 3306, //port mysql 
         database:'sampledb'
 
     },'pool') //or single
@@ -54,6 +54,7 @@ app.use(
 
 
 app.get('/', routes.index);
+//app.get('/', customers.list);
 app.get('/customers', customers.list);
 app.get('/customers/add', customers.add);
 app.post('/customers/add', customers.save);
