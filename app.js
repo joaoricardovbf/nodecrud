@@ -7,6 +7,8 @@ var express = require('express');
 var routes = require('./routes');
 var http = require('http');
 var path = require('path');
+var session = require('express-session');
+var bodyParser = require('body-parser');
 
 //load customers route
 var customers = require('./routes/customers'); 
@@ -26,6 +28,14 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+app.use(bodyParser.urlencoded({extended : true}));
+app.use(bodyParser.json());
 
 // development only
 if ('development' == app.get('env')) {
@@ -54,6 +64,7 @@ app.use(
 
 
 app.get('/', routes.index);
+app.post('/auth',customers.auth);
 //app.get('/', customers.list);
 app.get('/customers', customers.list);
 app.get('/customers/add', customers.add);
@@ -61,6 +72,9 @@ app.post('/customers/add', customers.save);
 app.get('/customers/delete/:id', customers.delete_customer);
 app.get('/customers/edit/:id', customers.edit);
 app.post('/customers/edit/:id',customers.save_edit);
+
+
+
 
 
 app.use(app.router);
