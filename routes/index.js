@@ -4,5 +4,5 @@
  */
 
 exports.index = function(req, res){
-  res.render('index', { title: 'Hello World' });
+  res.render('login', { title: 'D2D - World' });
 };

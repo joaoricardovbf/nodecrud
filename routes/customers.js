@@ -48,6 +48,44 @@ exports.edit = function(req, res){
     }); 
 };
 
+exports.auth = function(req, res){
+    
+    var input = JSON.parse(JSON.stringify(req.body));
+    //var id = req.params.id;
+    
+    req.getConnection(function(err,connection){
+
+        // var data = {
+            
+        //     name    : input.username,
+        //     address : input.password        
+        // };
+        // var username = data.name;
+        // var password = data.password;
+        var username = req.body.username;
+        var password = req.body.password;
+        //console.log("User Name Entered " + username)
+        //console.log("Password Entered " + password)
+        if (username && password){
+            connection.query('SELECT * FROM accounts WHERE username = ? AND password = ?', [username, password], function(err, results, fields) {
+                if (results.length > 0) {
+                    req.session.loggedin = true;
+                    req.session.username = username;
+                    //res.redirect('/home');
+                    res.render('index', { title: 'D2D - World' });
+                } else {
+                    res.send('Incorrect Username and/or Password!');
+                }			
+                res.end();
+            })
+            }else{
+                res.send('Please enter Username and Password!');
+                res.end();
+            } 
+        });
+      
+    };
+
 /*Save the customer*/
 exports.save = function(req,res){
     
@@ -127,5 +165,3 @@ exports.delete_customer = function(req,res){
         
      });
 };
-
-
